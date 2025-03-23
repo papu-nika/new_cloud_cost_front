@@ -7,12 +7,13 @@ import {
 } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { SidebarProvider, SidebarTrigger } from "app/components/ui/sidebar";
+import { AppSidebar } from "app/components/ui/app-sideber";
 
 const queryClient = new QueryClient();
 
 // import "./tailwind.css";
 import styles from "./tailwind.css?url";
-
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: styles },
@@ -38,11 +39,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-    <QueryClientProvider client={queryClient}>
-
-        {children}
-        <ScrollRestoration />
-        <Scripts />
+        <QueryClientProvider client={queryClient}>
+          <SidebarProvider>
+            <AppSidebar />
+            <main>
+              <SidebarTrigger />
+              {children}
+            </main>
+          </SidebarProvider>
+          <ScrollRestoration />
+          <Scripts />
         </QueryClientProvider>
       </body>
     </html>
